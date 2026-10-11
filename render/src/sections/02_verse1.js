@@ -3,6 +3,7 @@
 // with the 望月 seal — the way a painter titles a leaf.
 import { lyricEN, calli, kf, ph, recast, INK, INKC, PALE, PALEC, smooth } from './_lib.js';
 import { plateMap } from '../scenes/plate.js';
+import { teaWindow, TEA_WINDOW_KEYS } from '../scenes/teawindow.js';
 
 // 2.4 → 2.5: the teahouse soaks up through the white silk of the costume (multiply through a wet, lobed blot that
 // spreads from the centre), so the cut lands on the scene already there. Runtime only (canvas), deterministic in t.
@@ -96,6 +97,10 @@ export default function shots(B, X, L) {
       // carried (meta.keep); the astronaut's head turns, so her face is the take's.
       scene: [X.pick(TEA) ? { type: 'roto', clip: X.pick(TEA).clip, paper: 'silk', offset: TEA_OFF, lock: 0, style: { snapAmt: 0.12, lineTh: 0.62, lineA: 0.62 }, ...P25, to: { x: 0.5, y: 0.5, zoom: 1.12 } }
         : X.has(TEA) ? kf(TEA, { ...P25, to: { x: 0.5, y: 0.5, zoom: 1.12 }, par: [0, 0], dolly: 0 }) : ph('The teahouse', TEA)],
-      type(ctx, t) { lyricEN(ctx, L.L04, { ...small, key: 'b', x: 80, y: 660, breaks: [2], color: INK, until: L.L04.end + 0.7 }, t); } },   // on the plain wall, left of the family
+      // the view in the wall window is drawn live, under the lyric (scenes/teawindow.js): four painted planes of the West Lake
+      // skyline that slide against the window frame as the shot pulls back (Jade: "as the camera zooms out, you would expect
+      // the perspective in the window to change"). Baked into the take it smeared in the redraw; here it stays crisp.
+      needs: TEA_WINDOW_KEYS,
+      type(ctx, t) { teaWindow(ctx, t); lyricEN(ctx, L.L04, { ...small, key: 'b', x: 80, y: 660, breaks: [2], color: INK, until: L.L04.end + 0.7 }, t); } },   // on the plain wall, left of the family
   ];
 }

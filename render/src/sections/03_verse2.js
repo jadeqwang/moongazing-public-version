@@ -2,6 +2,7 @@
 // ~60–80 px, the Li Bai couplet as big calligraphy across the wall, HUD labels in the training montage.
 import { lyricEN, lyricZH, calli, card, hud, kf, ph, recast, bump, INK, INKC, PALE, PALEC, WHITE, smooth, easeInOutSine, osSing } from './_lib.js';
 import { plateMap } from '../scenes/plate.js';
+import { teaWindow, TEA_WINDOW_KEYS } from '../scenes/teawindow.js';
 import { CREW } from './05_interlude.js';
 
 export const range = [46.16, 75.08];
@@ -89,7 +90,11 @@ export default function shots(B, X, L) {
     //       face down by her cup (P_3.1). The take's clock continues from 2.5 (02_verse1.js: cut in at 0.5 s, rate 1).
     { id: '3.1', t0: S31, t1: S32, paper: 'silk', grain: 31, focus: [1170, 800],
       scene: [recast(X, 'P_3.1', { offset: 0.5 + (S31 - bar(24)), style: { snapAmt: 0.12, lineTh: 0.62, lineA: 0.62 }, from: { x: 0.5, y: 0.5, zoom: 1.12 }, to: { x: 0.5, y: 0.52, zoom: 1.04 } }, { par: [0, 0], dolly: -0.04, masks: { base: [0.0, 0.6] } })],
-      type(ctx, t) { lyricEN(ctx, L.L05, { ...mid, x: 80, y: 600, breaks: [2, 3], color: INK }, t); } },   // on the plain wall, left of the family
+      // the view in the wall window is drawn live, under the lyric (scenes/teawindow.js), from this shot's own push, carrying
+      // on from 2.5 (Jade: "as the camera zooms out, you would expect the perspective in the window to change"). Baked into
+      // the take it smeared in the redraw; here it stays crisp.
+      needs: TEA_WINDOW_KEYS,
+      type(ctx, t) { teaWindow(ctx, t); lyricEN(ctx, L.L05, { ...mid, x: 80, y: 600, breaks: [2, 3], color: INK }, t); } },   // on the plain wall, left of the family
     // 3.2 — a tangyuan bitten into a crescent (月缺) on the same table (P_3.2: Claire's indigo cuff holds the spoon,
     //       Waipo's hand with the bangle comes in for the chopsticks). Tight on the bowl: one focal point.
     { id: '3.2', t0: S32, t1: S33, paper: 'silk', grain: 32,
